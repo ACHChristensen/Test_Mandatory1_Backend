@@ -123,10 +123,16 @@ function generateRandomString(minLength: number, maxLength: number): string {
 }
 
 function setPhone(): string {
-    const phonePrefix = PHONE_PREFIXES[Math.floor(Math.random() * PHONE_PREFIXES.length)];
+    let phonePrefix = PHONE_PREFIXES[Math.floor(Math.random() * PHONE_PREFIXES.length)];
     // Generate random 6 digits to complete phone number
-    const randomDigits = Math.floor(Math.random() * 1000000).toString().padStart(5, '0');
-    const phoneNumber = `${phonePrefix}${randomDigits}`;
+    /*const randomDigits = Math.floor(Math.random() * 1000000).toString().padStart(5, '0');
+    const phoneNumber = `${phonePrefix}${randomDigits}`;*/
+    let phoneNumber =phonePrefix;
+    for (let index = 0; index < (8 - phonePrefix.length); index++) {
+        phoneNumber += (Math.floor(Math.random() * 10));
+        
+    }
+    
     return phoneNumber;
 }
 
