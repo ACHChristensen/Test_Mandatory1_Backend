@@ -9,8 +9,8 @@ on:
   pull_request:
     types: [opened, edited, reopened, synchronize]
     paths: # make sure this action only runs when specific file extensions have been added/modified
-      - '**.js'
-      - '**.jsx'
+      - "**.js"
+      - "**.jsx"
 
 jobs:
   test_job:
@@ -30,8 +30,8 @@ jobs:
         uses: esrimo/gh-action-eslint-changeset@v1
         id: eslint-changeset
         with:
-          main-branch: 'main'
-          file-extension: 'ts'
+          main-branch: "main"
+          file-extension: "ts"
       - name: jest-check
         uses: soomo/jest-check@0.0.5
         with:
@@ -45,6 +45,7 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
+      - run: npm lint
       - run: npm test
 
   publish-npm:
