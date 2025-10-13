@@ -1,5 +1,8 @@
 //import { getFakeInfo } from '../fakeInfo';
 import getFakeInfo from "../fakeInfo"; 
+import axios from "axios";
+
+
 describe('getFakeInfo()', () => {
   test('returns complete fake person with phone and address', async () => {
     const person = await getFakeInfo(); // await because it's async
@@ -28,4 +31,5 @@ describe('getFakeInfo()', () => {
      
   });
 });
+
 
