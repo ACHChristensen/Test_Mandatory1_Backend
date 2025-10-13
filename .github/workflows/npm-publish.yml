@@ -19,9 +19,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Checks
+      - name: Checks TypeScript
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: owen-6936/ts-checks@v1.0.0
       - uses: owen-6936/ts-checks@v1.0.0
-      - run: run lint
+
+      - name: Checkout PR Branch
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
@@ -35,7 +38,7 @@ jobs:
         id: eslint-changeset
         with:
           main-branch: "main"
-          file-extension: "ts"   
+          file-extension: "ts"
       - name: jest-check
         uses: soomo/jest-check@0.0.5
         with:
@@ -49,7 +52,7 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
-      - run: npm lint
+      - run: npm run lint
       - run: npm test
 
   publish-npm:
