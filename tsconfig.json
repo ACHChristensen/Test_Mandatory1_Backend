@@ -5,8 +5,21 @@
     "moduleResolution": "node",
     "rootDir": "./src",
     "outDir": "./dist",
-    "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+
+    /* Linting */
+    "strict": true, // Enable all strict type-checking options
+    "noUnusedLocals": true, // Report errors on unused local variables
+    //"noUnusedParameters": true, // Report errors on unused parameters
+    "erasableSyntaxOnly": true, // Only allow erasable syntax
+    "noFallthroughCasesInSwitch": true, // Report errors for fallthrough cases in switch statements
+    "noUncheckedSideEffectImports": true, // Disallow imports with unchecked side effects
+    "noImplicitReturns": true, // Report error when not all code paths in function return a value
+    "noImplicitOverride": true, // Ensure that the 'override' modifier is used when overriding methods
+    //"noPropertyAccessFromIndexSignature": true, // Disallow property access from index signatures
+    "noImplicitAny": true, // Raise error on expressions and declarations with an implied 'any' type
+    "noImplicitThis": true, // Raise error on 'this' expressions with an implied 'any' type
+    "alwaysStrict": true // Parse in strict mode and emit "use strict" for each source file
   }
 }

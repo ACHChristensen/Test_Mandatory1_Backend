@@ -6,17 +6,20 @@ const PORT = 3000;
 
 // Global Headers
 app.use((req: Request, res: Response, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.setHeader("Accept-Version", "v1");
-    next();
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.setHeader("Accept-Version", "v1");
+  next();
 });
 
 const apiLink = "/";
 
 // Info route
 app.get("/", async (req: Request, res: Response) => {
-    res.send(`
+  res.send(`
         <a href="${apiLink}cpr">Get CPR</a><br/>
         <a href="${apiLink}name-gender">Get Name and Gender</a><br/>
         <a href="${apiLink}name-gender-dob">Get Name, Gender and DOB</a><br/>
@@ -30,35 +33,58 @@ app.get("/", async (req: Request, res: Response) => {
 
 // API ENDPOINTS
 app.get(apiLink + "cpr", async (req: Request, res: Response) => {
-    const person = await fakeInfo();
-    res.json({ CPR: person.CPR });
+  const person = await fakeInfo();
+  res.json({ CPR: person.CPR });
 });
 app.get(apiLink + "name-gender", async (req: Request, res: Response) => {
-    const person = await fakeInfo();
-    res.json({ firstName: person.firstName, lastName: person.lastName, gender: person.gender });
+  const person = await fakeInfo();
+  res.json({
+    firstName: person.firstName,
+    lastName: person.lastName,
+    gender: person.gender,
+  });
 });
 app.get(apiLink + "name-gender-dob", async (req: Request, res: Response) => {
-    const person = await fakeInfo();
-    res.json({ firstName: person.firstName, lastName: person.lastName, gender: person.gender, birthDate: person.birthDate });
+  const person = await fakeInfo();
+  res.json({
+    firstName: person.firstName,
+    lastName: person.lastName,
+    gender: person.gender,
+    birthDate: person.birthDate,
+  });
 });
 app.get(apiLink + "cpr-name-gender", async (req: Request, res: Response) => {
-    const person = await fakeInfo();
-    res.json({ CPR: person.CPR, firstName: person.firstName, lastName: person.lastName, gender: person.gender });
+  const person = await fakeInfo();
+  res.json({
+    CPR: person.CPR,
+    firstName: person.firstName,
+    lastName: person.lastName,
+    gender: person.gender,
+  });
 });
-app.get(apiLink + "cpr-name-gender-dob", async (req: Request, res: Response) => {
+app.get(
+  apiLink + "cpr-name-gender-dob",
+  async (req: Request, res: Response) => {
     const person = await fakeInfo();
-    res.json({ CPR: person.CPR, firstName: person.firstName, lastName: person.lastName, gender: person.gender, birthDate: person.birthDate });
-});
+    res.json({
+      CPR: person.CPR,
+      firstName: person.firstName,
+      lastName: person.lastName,
+      gender: person.gender,
+      birthDate: person.birthDate,
+    });
+  }
+);
 app.get(apiLink + "address", async (req: Request, res: Response) => {
-    const person = await fakeInfo();
-    res.json({ address: person.address });
+  const person = await fakeInfo();
+  res.json({ address: person.address });
 });
 app.get(apiLink + "phone", async (req: Request, res: Response) => {
-    const person = await fakeInfo();
-    res.json({ phoneNumber: person.phoneNumber });
+  const person = await fakeInfo();
+  res.json({ phoneNumber: person.phoneNumber });
 });
 app.get(apiLink + "person", async (req: Request, res: Response) => {
-    /*const n = req.query.n ? Number(req.query.n) : 1;
+  /*const n = req.query.n ? Number(req.query.n) : 1;
     const numPersons = Math.abs(Math.floor(n));
     let person = await fakeInfo();
     console.log(numPersons)
@@ -73,10 +99,10 @@ app.get(apiLink + "person", async (req: Request, res: Response) => {
         case numPersons > 1 && numPersons <= 100:  
             let persons= [person];      
     }*/
-    const person = await fakeInfo();
-    res.json({ person });  
+  const person = await fakeInfo();
+  res.json({ person });
 });
 
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });

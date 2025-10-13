@@ -83,7 +83,7 @@ describe("API via localhost", () => {
     if (isJsonObj) {
       expect(
         typeof (res.data as any).error === "string" ||
-        typeof (res.data as any).message === "string"
+          typeof (res.data as any).message === "string"
       ).toBe(true);
     } else {
       expect(typeof res.data === "string").toBe(true); // HTML
@@ -96,9 +96,9 @@ describe("API via localhost", () => {
     expect(res.status).toBe(200);
     expect(typeof res.data).toBe("string");
     // forvent at de vigtigste links er på siden
-    expect(res.data).toContain('/person');
-    expect(res.data).toContain('/cpr');
-    expect(res.data).toContain('/address');
+    expect(res.data).toContain("/person");
+    expect(res.data).toContain("/cpr");
+    expect(res.data).toContain("/address");
   });
 });
 
