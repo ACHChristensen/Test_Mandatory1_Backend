@@ -142,7 +142,8 @@ async function setAddress(): Promise<{
         floor = String(Math.floor(Math.random() * 99) + 1);
     }
 
-  const door = String.fromCharCode(65 + Math.floor(Math.random() * 26)); // A-Z
+    const door = getRandomDoor()   
+  //const door = String.fromCharCode(97 + Math.floor(Math.random() * 26)); // 67=A-Z , 97=a-z
   // Get from MySQL database
   const randomTownName = await getRandomTown();
   const postal_code = randomTownName.cPostalCode;
@@ -175,4 +176,21 @@ function setPhone(): string {
   }
 
   return phoneNumber;
+}
+
+
+function getRandomDoor(): string {
+  const specialDoors = ["th", "mf", "tv"];
+  const choice = Math.random();
+
+  if (choice < 0.3) {
+    // 30% chance → one of "th", "mf", "tv"
+    return specialDoors[Math.floor(Math.random() * specialDoors.length)];
+  } else if (choice < 0.7) {
+    // 40% chance → number from 1–50
+    return String(Math.floor(Math.random() * 50) + 1);
+  } else {
+    // 30% chance → lowercase letter (a–z)
+    return String.fromCharCode(97 + Math.floor(Math.random() * 26)); // a-z
+  }
 }
