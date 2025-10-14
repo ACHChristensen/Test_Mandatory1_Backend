@@ -10,7 +10,7 @@ interface FakePerson {
   address: {
     street: string;
     number: string;
-    floor: number;
+    floor: string;
     door: string;
     postal_code: string;
     town_name: string;
@@ -42,16 +42,16 @@ const PHONE_PREFIXES = [
 
 export default async function getFakeInfo(): Promise<FakePerson> {
   // Generate fake info
-  const birthAndCpr: { birthDate: string; cpr: string } = setBirthAndCpr();
   const fullNameAndGender: {
     firstName: string;
     lastName: string;
     gender: "male" | "female";
   } = setFullNameAndGender();
+  const birthAndCpr: { birthDate: string; cpr: string } = setBirthAndCpr(fullNameAndGender.gender);
   const address: {
     street: string;
     number: string;
-    floor: number;
+    floor: string;
     door: string;
     postal_code: string;
     town_name: string;
@@ -71,7 +71,7 @@ export default async function getFakeInfo(): Promise<FakePerson> {
   return fakePerson;
 }
 
-function setBirthAndCpr(): { birthDate: string; cpr: string } {
+function setBirthAndCpr(gender: string): { birthDate: string; cpr: string } {
   // Get random birth date
   const currentYear = new Date().getFullYear();
   const birthYear = currentYear - (Math.floor(Math.random() * 63) + 18); // 18-80 years old
@@ -82,7 +82,7 @@ function setBirthAndCpr(): { birthDate: string; cpr: string } {
     .toString()
     .padStart(2, "0")}-${birthYear}`;
   // Generate CPR based on birth date
-  const cpr: string = setCpr(birthDate);
+  const cpr: string = setCpr(birthDate, gender);
 
   return { birthDate, cpr };
 }
@@ -103,21 +103,30 @@ function setFullNameAndGender(): {
   };
 }
 
-function setCpr(birthDate: string): string {
+function setCpr(birthDate: string, gender: string): string {
+
   const [day, month, year] = birthDate.split("-");
   const cprBase = `${day}${month}${year.slice(-2)}`;
   // Generate random 4 digits to complete CPR
-  const randomDigits = Math.floor(Math.random() * 10000)
+  const randomDigits = Math.floor(Math.random() * 1000)
     .toString()
-    .padStart(4, "0");
+    .padStart(3, "0");
+  let lastDigit;
+    if (gender.toLowerCase() === "female") {
+        lastDigit = 2 * Math.floor(Math.random() * 5); // 0,2,4,6,8
+    } else if (gender.toLowerCase() === "male") {
+        lastDigit = 2 * Math.floor(Math.random() * 5) + 1; // 1,3,5,7,9
+    } else {
+        throw new Error("Gender must be 'male' or 'female'");
+    }  
 
-  return `${cprBase}-${randomDigits}`;
+  return `${cprBase}-${randomDigits}${lastDigit}`;
 }
 
 async function setAddress(): Promise<{
   street: string;
   number: string;
-  floor: number;
+  floor: string;
   door: string;
   postal_code: string;
   town_name: string;
@@ -125,12 +134,20 @@ async function setAddress(): Promise<{
   // Generate a 10-20 character fake street name
   const street = generateRandomString(10, 20) + " Street";
   const number = (Math.floor(Math.random() * 200) + 1).toString(); // 1-200
-  const floor = Math.floor(Math.random() * 10) + 1; // 1-10
+  //const floor = Math.floor(Math.random() * 10) + 1; // 1-10
+  let floor;
+    if (Math.floor(Math.random() * 10)< 3) { // 30% chance to be "st"
+        floor = "st";
+    }else{
+        floor = String(Math.floor(Math.random() * 99) + 1);
+    }
+
   const door = String.fromCharCode(65 + Math.floor(Math.random() * 26)); // A-Z
   // Get from MySQL database
   const randomTownName = await getRandomTown();
   const postal_code = randomTownName.cPostalCode;
   const town_name = randomTownName.cTownName;
+  
   return { street, number, floor, door, postal_code, town_name };
 }
 
