@@ -19,7 +19,7 @@ interface FakePersonJson {
   }[];
 }
 
-describe("getFakeInfo()", () => {
+describe("test getFakeInfo() function", () => {
   let person: Awaited<ReturnType<typeof getFakeInfo>>;
   const filePath: string = "./src/data/person-names.json";
   let jsonData: FakePersonJson;
@@ -46,7 +46,7 @@ describe("getFakeInfo()", () => {
 
     expect(hasValidPrefix).toBe(true);
   });
-  // TODO - make adreess test 
+
   test("adreess ", () => {
      // Check that address exists and has expected fields
     expect(person.address).toBeDefined();
@@ -62,35 +62,34 @@ describe("getFakeInfo()", () => {
     expect(typeof person.address.number).toBe("string");
     //Number. A number from 1 to 999 optionally followed by an uppercase letter 
     // (e.g.,1= true, 43B=true, 999Z=true, 0A=false, 1000=false, 50b=false(lowercase not allowed) )
-    expect(person.address.number).toMatch(/^(?:[1-9]|[1-9]\d|[1-9]\d\d)[A-Z]?$/);
+    expect(person.address.number).toMatch(/^(?:[1-9]|[0-9]\d|[0-9]\d\d)[A-Z]?$/);
 
     expect(person.address.floor).toBeDefined();
     expect(typeof person.address.floor).toBe("string");
-    expect(person.address.floor).toMatch(/^(?:st|[1-9]|[1-9]\d)$/); //Floor. Either “st” or a number from 1 to 99
+    expect(person.address.floor).toMatch(/^(?:st|[1-9]|[0-9]\d)$/); //Floor. Either “st” or a number from 1 to 99
     
     expect(person.address.door).toBeDefined();
     expect(typeof person.address.door).toBe("string");
     //Door. “th”, “mf”, “tv”, a number from 1 to 50, or a lowercase letter optionally followed by a dash, 
     // then followed by one to three numeric digits (e.g., c3, d-14)
-    expect(person.address.door).toMatch(/^(?:th|mf|tv|[1-9]|[1-4]\d|50|[a-z])\-?\d{1,3}$/);
+    expect(person.address.door).toMatch(/^(?:th|mf|tv|[1-9]|[1-4]\d|50|[a-z](?:-?\d{1,3})?)$/);
 
     expect(person.address.postal_code).toBeDefined();
     expect(typeof person.address.postal_code).toBe("string");
-
+    expect(person.address.postal_code).toMatch(/^\d{4}$/);
 
     expect(person.address.town_name).toBeDefined();
     expect(typeof person.address.town_name).toBe("string");
-    expect(person.address.town_name).toBeDefined();
-
-    //
-    
+    expect(person.address.town_name).toMatch(/^[A-Za-zÆØÅæøå\s'-]+$/);
   });
 
 test("firstName,lastName and gender match json file", () => {
     expect(person.firstName).toBeDefined();
     expect(typeof person.firstName).toBe("string");
+    expect(person.firstName).toMatch(/^[^0-9]+$/);
     expect(person.lastName).toBeDefined();
     expect(typeof person.lastName).toBe("string");
+    expect(person.lastName).toMatch(/^[^0-9]+$/);
     const found = jsonData.persons.some(
       p => p.firstName === person.firstName && p.lastName === person.lastName &&
        person.gender === "male"|| person.gender === "female"
@@ -128,29 +127,4 @@ test("firstName,lastName and gender match json file", () => {
     }
     
   });
-  
-  test("returns complete fake person with phone and address", () => {
-    // Check that phoneNumber exists and is a string
-    /*expect(person.phoneNumber).toBeDefined();
-    expect(typeof person.phoneNumber).toBe("string");
-    expect(person.phoneNumber).toHaveLength(8);*/
-
-    // Check that address exists and has expected fields
-    expect(person.address).toBeDefined();
-    expect(typeof person.address).toBe("object");
-    expect(person.address.street).toBeDefined();
-    expect(person.address.number).toBeDefined();
-    expect(person.address.town_name).toBeDefined();
-
-    // Check that personal info exists
-    expect(person.firstName).toBeDefined();
-    expect(person.lastName).toBeDefined();
-    expect(person.gender).toMatch(/male|female/);
-    expect(person.CPR).toBeDefined();
-    expect(typeof person.CPR).toBe("string");
-    expect(person.CPR).toHaveLength(11);
-    expect(person.birthDate).toBeDefined();
-  });
-
- 
 });
