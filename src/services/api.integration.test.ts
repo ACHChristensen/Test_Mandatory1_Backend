@@ -41,7 +41,8 @@ describe("API via localhost", () => {
     expect(res.status).toBe(200);
 
     // API returnerer { person: {...} }
-    const p = res.data?.person as any;
+    console.log(res);
+    const p = res.data[0] as any;
     expect(p).toBeDefined();
 
     expect(p).toEqual(
@@ -133,7 +134,7 @@ test("[BB][Property] GET_/person Repeat_50_Runs_No_Invalid_Fields", async () => 
   for (let i = 0; i < 50; i++) {
     const res = await client.get("/person");
     expect(res.status).toBe(200);
-    const p = res.data.person;
+    const p = res.data[0];
     expect(p.phoneNumber).toMatch(/^\d{8}$/);
     expect(p.CPR).toMatch(/^\d{6}-\d{4}$/);
 
