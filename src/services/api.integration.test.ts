@@ -41,7 +41,8 @@ describe("API via localhost", () => {
     expect(res.status).toBe(200);
 
     // API returnerer { person: {...} }
-    const p = res.data?.person as any;
+    console.log(res);
+    const p = res.data[0] as any;
     expect(p).toBeDefined();
 
     expect(p).toEqual(
@@ -83,7 +84,7 @@ describe("API via localhost", () => {
     if (isJsonObj) {
       expect(
         typeof (res.data as any).error === "string" ||
-          typeof (res.data as any).message === "string"
+        typeof (res.data as any).message === "string"
       ).toBe(true);
     } else {
       expect(typeof res.data === "string").toBe(true); // HTML
@@ -106,3 +107,43 @@ describe("API via localhost", () => {
 afterAll(() => {
   jest.clearAllTimers();
 });
+
+test("[BB][Happy] GET_/cpr Returns_200_And_CPR_Format", async () => {
+  const res = await client.get("/cpr");
+  expect(res.status).toBe(200);
+  const cpr = (res.data?.CPR ?? res.data?.cpr ?? res.data) as string;
+  expect(typeof cpr).toBe("string");
+  expect(cpr).toMatch(/^\d{6}-\d{4}$/);
+});
+
+test("[BB][Happy] GET_/address Returns_200_And_Address_Schema", async () => {
+  const res = await client.get("/address");
+  expect(res.status).toBe(200);
+  const a = res.data?.address ?? res.data;
+  expect(a).toEqual(
+    expect.objectContaining({
+      street: expect.any(String),
+      number: expect.anything(),
+      town_name: expect.any(String),
+      postal_code: expect.stringMatching(/^\d{4}$/),
+    })
+  );
+});
+
+test("[BB][Property] GET_/person Repeat_50_Runs_No_Invalid_Fields", async () => {
+  for (let i = 0; i < 50; i++) {
+    const res = await client.get("/person");
+    expect(res.status).toBe(200);
+    const p = res.data[0];
+    expect(p.phoneNumber).toMatch(/^\d{8}$/);
+    expect(p.CPR).toMatch(/^\d{6}-\d{4}$/);
+
+    // CPR prefix vs. DOB
+    const dob = (p.birthDate || "").trim();
+    const ddmmyy = /^\d{4}-\d{2}-\d{2}$/.test(dob)
+      ? (() => { const [y,m,d]=dob.split("-"); return `${d}${m}${y.slice(-2)}`; })()
+      : (() => { const [d,m,y]=dob.split("-"); return `${d}${m}${y.slice(-2)}`; })();
+    expect(p.CPR.startsWith(ddmmyy)).toBe(true);
+  }
+});
+
