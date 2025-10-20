@@ -13,11 +13,18 @@ on:
       - "**.jsx"
 
 jobs:
-  test_job:
+  ts-checks-test:
     runs-on: ubuntu-latest
-    name: A job to test eslint-changeset action
     steps:
-      - name: Checkout
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Checks TypeScript
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: owen-6936/ts-checks@v1.0.0
+      - uses: owen-6936/ts-checks@v1.0.0
+
+      - name: Checkout PR Branch
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
@@ -45,7 +52,7 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
-      - run: npm lint
+      - run: npm run lint
       - run: npm test
 
   publish-npm:

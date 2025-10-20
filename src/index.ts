@@ -84,23 +84,21 @@ app.get(apiLink + "phone", async (req: Request, res: Response) => {
   res.json({ phoneNumber: person.phoneNumber });
 });
 app.get(apiLink + "person", async (req: Request, res: Response) => {
-  /*const n = req.query.n ? Number(req.query.n) : 1;
-    const numPersons = Math.abs(Math.floor(n));
-    let person = await fakeInfo();
-    console.log(numPersons)
-    switch(true) {
-        case numPersons===0:
-            res.json({error:"Invalid number of persons"});
-            break;
-        case numPersons===1:   
-            
-            res.json({ person });
-            break;
-        case numPersons > 1 && numPersons <= 100:  
-            let persons= [person];      
-    }*/
-  const person = await fakeInfo();
-  res.json({ person });
+  const quantity = req.query.n || "1";
+  if (isNaN(Number(quantity))) {
+    res.status(400).json({ error: "Quantity must be a number" });
+  }
+  if (Number(quantity) < 1 || Number(quantity) > 100) {
+    res
+      .status(400)
+      .json({ error: "Quantity must be between 1 and 100 (inclusive)" });
+  }
+  const persons = [];
+  for (let i = 0; i < Number(quantity); i++) {
+    const person = await fakeInfo();
+    persons.push(person);
+  }
+  res.json(persons);
 });
 
 app.listen(PORT, () => {
