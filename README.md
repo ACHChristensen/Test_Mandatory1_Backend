@@ -12,7 +12,46 @@ Sample PHP object-oriented REST API that generates fake data of nonexistent Dani
 
 1. The script `db/addresses.sql` must be run. It will create the MariaDB/MySQL database `addresses`.
 2. The file `info/info.php` contains default database values. It may be necessary to update it with the database configuration in use.
+### 🧩 Installation
 
+#### Step 1 – Install XAMPP
+1. Download and install [XAMPP](https://www.apachefriends.org/download.html).  
+2. After installation, open the **XAMPP Control Panel**.
+
+#### Step 2 – Clone the Project
+```bash
+# Clone this repository into your XAMPP htdocs folder
+git clone https://github.com/ACHChristensen/Test_Mandatory1_Backend ../xampp/htdocs/Test_Mandatory1_Backend
+```
+3. Start XAMPP Services
+* Start Apache
+* Start MySQL
+**Click Admin next to MySQL to open phpMyAdmin**
+
+4. Set Up the Database
+* In phpMyAdmin,under sql 
+* Run the SQL script located at:
+```bash
+  src/data/addresses.sql
+```
+This will create the required tables and insert data.
+
+5. Run the Project 
+Navigate to the project folder and install dependencies:
+```bash
+cd Test_Mandatory1_Backend
+npm install
+npm run dev
+```
+6. Open the Project
+When the development server is running, open your browser and go to:
+```bash
+http://localhost:3000/
+```
+6. Run test:
+```bash
+npm test
+```
 ## API Endpoints
 |Method|Endpoint|
 |------|--------|
@@ -162,17 +201,10 @@ Array
 
 ## Authors
 Arturo Mora-Rioja
+[Fake Data Generator](https://github.com/arturomorarioja/fake_info)
 
 #Testers
 Gruppe F 
 (Cathrine, Michael, Allan, Sean, Jakob)
 
-### Setup and running tests
-# Recommended:
-1. Make sure to have NodeJS, VSCode and XAMPP installed.
-2. Run database script in MySQL server via XAMPP
-3. Make sure Apache runs in XAMPP
-   (If Apache doesn't function - check in windows: Services -> MySQL80, click 'Stop service' )
-5. Run 'npm install' in VSCode for installing depencenies
-6. Run 'npm run dev'
-7. To run tests run 'npm test'
+
