@@ -153,7 +153,26 @@ Array
 ```
 
 ## Tools
-PHP8 / MariaDB
+- TypeScript / CSS3 / HTML5
+- NodeJS V20
+- Jest V30
+- ESLint V9
+- XAMPP V8.2.12 (MySQL, Apache incl.)
+- VSCode
 
-## Author
+## Authors
 Arturo Mora-Rioja
+
+#Testers
+Gruppe F 
+(Cathrine, Michael, Allan, Sean, Jakob)
+
+### Setup and running tests
+# Recommended:
+1. Make sure to have NodeJS, VSCode and XAMPP installed.
+2. Run database script in MySQL server via XAMPP
+3. Make sure Apache runs in XAMPP
+   (If Apache doesn't function - check in windows: Services -> MySQL80, click 'Stop service' )
+5. Run 'npm install' in VSCode for installing depencenies
+6. Run 'npm run dev'
+7. To run tests run 'npm test'
